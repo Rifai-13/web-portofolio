@@ -85,3 +85,16 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes scrollInfinity {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scroll-infinity {
+  animation: scrollInfinity var(--animation-duration) linear infinite;
+}

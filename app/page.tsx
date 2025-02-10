@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 import { logEvent } from "firebase/analytics";
 import { analytics } from "@/lib/firebase"; // Import analytics dari konfigurasi Firebase
-import { Navbar } from "@/components/Navbar";
-import Main from "./main/page";
+// import { LayoutDashboard } from "lucide-react";
+import Dashboard from "./dashboard/page";
 
 export default function Home() {
   useEffect(() => {
@@ -18,8 +18,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
-      <Main />
+      <Dashboard />
     </>
   );
 }
