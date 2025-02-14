@@ -17,6 +17,7 @@ export function AppSidebar() {
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [index, setIndex] = useState(0);
+  
   const items = [
     { name: "HTML", imageSrc: "/image/html.png" },
     { name: "CSS", imageSrc: "/image/css.png" },
@@ -105,8 +106,8 @@ export function AppSidebar() {
           </motion.h3>
         </div>
       </SidebarHeader>
-      <SidebarContent className="w-full h-full mr-20">
-      <InfiniteMovingCards items={items}/>
+      <SidebarContent className="w-full h-full flex flex-col items-center justify-center">
+        <InfiniteMovingCards items={items} direction="right" speed="normal" />
       </SidebarContent>
     </Sidebar>
   );
