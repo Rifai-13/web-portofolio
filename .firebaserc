@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "rifai-13-portofolio",
+    "production": "rifai-13-portofolio"
+  },
+  "targets": {},
+  "etags": {}
+}
