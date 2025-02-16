@@ -91,16 +91,23 @@ export const InfiniteMovingCards = ({
       // Setting speed for each layer
       const speedDurations = {
         fast: "30s",
-        normal: "45s",
+        normal: "40s",
         slow: "80s",
       };
 
-      // Assigning different speeds to different layers
+      // Layer 1: Fast speed
       if (scrollerRef1.current && scrollerRef1.current.style) {
         scrollerRef1.current.style.animationDuration = speedDurations[speed] || speedDurations.fast;
       }
+
+      // Layer 2: Normal speed (this remains the same for Layer 2)
+      if (scrollerRef2.current && scrollerRef2.current.style) {
+        scrollerRef2.current.style.animationDuration = speedDurations[speed] || speedDurations.normal;
+      }
+
+      // Layer 3: Slower speed
       if (scrollerRef3.current && scrollerRef3.current.style) {
-        scrollerRef3.current.style.animationDuration = speedDurations[speed] || speedDurations.slow;  // Layer 3 slower
+        scrollerRef3.current.style.animationDuration = speedDurations[speed] || speedDurations.slow; // Layer 3 slower
       }
     }
   };
@@ -125,7 +132,7 @@ export const InfiniteMovingCards = ({
             start && "animate-scroll",
             pauseOnHover && "hover:[animation-play-state:paused]"
           )}
-          style={{ animationDirection: "reverse" }} // Layer 1: Move to the left
+          style={{ animationDirection: "reverse"}} // Layer 1: Move to the left
         >
           {items.map((item) => (
             <li

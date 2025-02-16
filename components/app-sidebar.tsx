@@ -79,7 +79,7 @@ export function AppSidebar() {
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 1.5, duration: 0.8 }}
           >
-            Front End Engineer
+            Sofware Developer
           </motion.h2>
 
           <motion.h3
