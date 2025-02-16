@@ -2,8 +2,6 @@
 
 
 export function SiteHeader() {
-
-
   return (
     <>
     <header className="fle sticky top-0 z-50 w-full items-center border-b bg-background">
