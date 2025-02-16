@@ -12,10 +12,8 @@ export const InfiniteMovingCards = ({
   className,
 }: {
   items: {
-    quote: string;
     name: string;
-    title: string;
-    imageSrc: string; // Menambahkan imageSrc untuk gambar
+    imageSrc: string;
   }[];
   direction?: "left" | "right";
   speed?: "fast" | "normal" | "slow";
@@ -23,62 +21,49 @@ export const InfiniteMovingCards = ({
   className?: string;
 }) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const scrollerRef1 = React.useRef<HTMLUListElement>(null);
-  const scrollerRef2 = React.useRef<HTMLUListElement>(null);
-  const scrollerRef3 = React.useRef<HTMLUListElement>(null);
-
-  useEffect(() => {
-    addAnimation();
-  }, []);
+  const scrollerRef = React.useRef<HTMLUListElement>(null);
 
   const [start, setStart] = useState(false);
 
-  function addAnimation() {
-    if (containerRef.current && scrollerRef1.current && scrollerRef2.current && scrollerRef3.current) {
-      // Duplicating content for infinite scroll effect
-      const scrollerContent1 = Array.from(scrollerRef1.current.children);
-      const scrollerContent2 = Array.from(scrollerRef2.current.children);
-      const scrollerContent3 = Array.from(scrollerRef3.current.children);
+  useEffect(() => {
+    function addAnimation() {
+      if (containerRef.current && scrollerRef.current) {
+        const scrollerContent = Array.from(scrollerRef.current.children);
+        
+        scrollerContent.forEach((item) => {
+          const duplicatedItem = item.cloneNode(true);
+          scrollerRef.current?.appendChild(duplicatedItem);
+        });
 
-      scrollerContent1.forEach((item) => {
-        const duplicatedItem = item.cloneNode(true);
-        scrollerRef1.current.appendChild(duplicatedItem);
-      });
-
-      scrollerContent2.forEach((item) => {
-        const duplicatedItem = item.cloneNode(true);
-        scrollerRef2.current.appendChild(duplicatedItem);
-      });
-
-      scrollerContent3.forEach((item) => {
-        const duplicatedItem = item.cloneNode(true);
-        scrollerRef3.current.appendChild(duplicatedItem);
-      });
-
-      getDirection();
-      getSpeed();
-      setStart(true);
+        getDirection();
+        getSpeed();
+        setStart(true);
+      }
     }
-  }
+    addAnimation();
+  }, []);
 
   const getDirection = () => {
     if (containerRef.current) {
-      if (direction === "right") {
-        containerRef.current.style.setProperty("--animation-direction", "forwards");
-      } else {
-        containerRef.current.style.setProperty("--animation-direction", "reverse");
-      }
+      containerRef.current.style.setProperty(
+        "--animation-direction",
+        direction === "right" ? "forwards" : "reverse"
+      );
     }
   };
 
   const getSpeed = () => {
     if (containerRef.current) {
-      if (speed === "fast") {
-        containerRef.current.style.setProperty("--animation-duration", "20s");
-      } else if (speed === "normal") {
-        containerRef.current.style.setProperty("--animation-duration", "40s");
-      } else {
-        containerRef.current.style.setProperty("--animation-duration", "80s");
+      switch (speed) {
+        case "fast":
+          containerRef.current.style.setProperty("--animation-duration", "20s");
+          break;
+        case "normal":
+          containerRef.current.style.setProperty("--animation-duration", "40s");
+          break;
+        case "slow":
+          containerRef.current.style.setProperty("--animation-duration", "80s");
+          break;
       }
     }
   };
@@ -91,154 +76,36 @@ export const InfiniteMovingCards = ({
         className
       )}
     >
-      <div className="flex flex-col gap-2">
-        {/* Layer 1 (Right direction) */}
-        <ul
-          ref={scrollerRef1}
-          className={cn(
-            "flex min-w-full shrink-0 gap-2 py-2 w-max flex-nowrap",
-            start && "animate-scroll",
-            pauseOnHover && "hover:[animation-play-state:paused]"
-          )}
-          style={{ animationDirection: "forwards" }} // Move to the right
-        >
-          {items.map((item) => (
-            <li
-              key={item.name}
-              className="flex items-center justify-start space-x-4 p-2 bg-black rounded-xl border border-gray-600 hover:border-blue-500"
-              style={{
-                width: "fit-content",
-                height: "40px",
-                borderWidth: "2px",
-              }}
-            >
-              <Image
-                src={item.imageSrc}
-                alt={item.name}
-                width={25}
-                height={20}
-                className="object-contain"
-              />
-              {/* Teks */}
-              <div className="ml-4 mb-4 flex flex-col justify-center">
-                <blockquote>
-                  <span className="relative z-20 text-sm leading-[1.6] text-gray-100 font-normal">
-                    {item.quote}
-                  </span>
-                </blockquote>
-                <div className="relative z-20 mt-6 flex flex-row items-center">
-                  <span className="flex flex-col gap-1">
-                    <span className="text-sm leading-[1.6] text-gray-400 font-normal">
-                      {item.name}
-                    </span>
-                    <span className="text-sm leading-[1.6] text-gray-400 font-normal">
-                      {item.title}
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-
-        {/* Layer 2 (Left direction) */}
-        <ul
-          ref={scrollerRef2}
-          className={cn(
-            "flex min-w-full shrink-0 gap-2 py-2 w-max flex-nowrap",
-            start && "animate-scroll",
-            pauseOnHover && "hover:[animation-play-state:paused]"
-          )}
-          style={{ animationDirection: "reverse" }} // Move to the left
-        >
-          {items.map((item) => (
-            <li
-              key={item.name}
-              className="flex items-center justify-start space-x-4 p-2 bg-black rounded-xl border border-gray-600 hover:border-blue-500"
-              style={{
-                width: "fit-content",
-                height: "40px",
-                borderWidth: "2px",
-              }}
-            >
-              <Image
-                src={item.imageSrc}
-                alt={item.name}
-                width={25}
-                height={20}
-                className="object-contain"
-              />
-              {/* Teks */}
-              <div className="ml-4 mb-4 flex flex-col justify-center">
-                <blockquote>
-                  <span className="relative z-20 text-sm leading-[1.6] text-gray-100 font-normal">
-                    {item.quote}
-                  </span>
-                </blockquote>
-                <div className="relative z-20 mt-6 flex flex-row items-center">
-                  <span className="flex flex-col gap-1">
-                    <span className="text-sm leading-[1.6] text-gray-400 font-normal">
-                      {item.name}
-                    </span>
-                    <span className="text-sm leading-[1.6] text-gray-400 font-normal">
-                      {item.title}
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-
-        {/* Layer 3 (Right direction) */}
-        <ul
-          ref={scrollerRef3}
-          className={cn(
-            "flex min-w-full shrink-0 gap-2 py-4 w-max flex-nowrap",
-            start && "animate-scroll",
-            pauseOnHover && "hover:[animation-play-state:paused]"
-          )}
-          style={{ animationDirection: "forwards" }} // Move to the right
-        >
-          {items.map((item) => (
-            <li
-              key={item.name}
-              className="flex items-center justify-start space-x-4 p-2 bg-black rounded-xl border border-gray-600 hover:border-blue-500"
-              style={{
-                width: "fit-content",
-                height: "40px",
-                borderWidth: "2px",
-              }}
-            >
-              <Image
-                src={item.imageSrc}
-                alt={item.name}
-                width={25}
-                height={20}
-                className="object-contain"
-              />
-              {/* Teks */}
-              <div className="mb-4 flex flex-col justify-center">
-                <blockquote>
-                  <span className="relative z-20 text-sm leading-[1.6] text-gray-100 font-normal">
-                    {item.quote}
-                  </span>
-                </blockquote>
-                <div className="relative z-20 mt-6 flex flex-row items-center">
-                  <span className="flex flex-col gap-1">
-                    <span className="text-sm leading-[1.6] text-gray-400 font-normal">
-                      {item.name}
-                    </span>
-                    <span className="text-sm leading-[1.6] text-gray-400 font-normal">
-                      {item.title}
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ul
+        ref={scrollerRef}
+        className={cn(
+          "flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap",
+          start && "animate-scroll",
+          pauseOnHover && "hover:[animation-play-state:paused]"
+        )}
+      >
+        {items.map((item) => (
+          <li
+            key={item.name}
+            className="flex items-center p-4 bg-black rounded-xl border-2 border-gray-600 hover:border-blue-500"
+            style={{
+              width: '200px',
+              height: '60px',
+            }}
+          >
+            <Image
+              src={item.imageSrc}
+              alt={item.name}
+              width={32}
+              height={32}
+              className="w-8 h-8 object-contain"
+            />
+            <span className="text-lg text-gray-100 ml-2">
+              {item.name}
+            </span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

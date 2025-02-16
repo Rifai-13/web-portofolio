@@ -8,6 +8,15 @@ export default {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+
+    screens: {
+      'xs': '360px',
+      'sm': '480px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+    },
+
     extend: {
       colors: {
         background: "hsl(var(--background))",
@@ -77,12 +86,6 @@ export default {
           },
         },
       },
-    },
-    screens: {
-      'sm': '640px',
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
     },
   },
   plugins: [require("tailwindcss-animate")],

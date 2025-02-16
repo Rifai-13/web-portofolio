@@ -64,7 +64,7 @@ export function AppSidebar() {
   return (
     <Sidebar
       style={{ border: "none" }}
-      className="bg-background text-card-foreground w-64 h-full p-4"
+      className="bg-background text-card-foreground w-full md:w-64 h-full p-4"
     >
       <SidebarHeader>
         <div className="items-center justify-start mt-20 ml-20">
