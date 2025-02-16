@@ -1,14 +1,10 @@
 "use client";
 
 import * as React from "react";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-} from "@/components/ui/sidebar";
 import { motion } from "framer-motion";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 export function AppSidebar() {
   const staticText = "Muh"; // Bagian teks yang tetap
@@ -17,7 +13,7 @@ export function AppSidebar() {
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [index, setIndex] = useState(0);
-  
+
   const items = [
     { name: "HTML", imageSrc: "/image/html.png" },
     { name: "CSS", imageSrc: "/image/css.png" },
@@ -36,17 +32,17 @@ export function AppSidebar() {
     { name: "Shadcn/Ui", imageSrc: "/image/shadcn.png" },
     { name: "Figma", imageSrc: "/image/figma.png" },
     { name: "Vite", imageSrc: "/image/vite.png" },
-  ]; // Define your items here
+  ];
 
   useEffect(() => {
-    const typingSpeed = isDeleting ? 100 : 200; // Kecepatan ketik & hapus
+    const typingSpeed = isDeleting ? 100 : 200;
     const timeout = setTimeout(() => {
       if (!isDeleting) {
         if (index < typingText.length) {
           setDisplayText((prev) => prev + typingText[index]);
           setIndex(index + 1);
         } else {
-          setTimeout(() => setIsDeleting(true), 1000); // Tunggu sebelum hapus
+          setTimeout(() => setIsDeleting(true), 1000);
         }
       } else {
         if (index > 0) {
@@ -62,32 +58,23 @@ export function AppSidebar() {
   }, [index, isDeleting]);
 
   return (
-    <Sidebar
-      style={{ border: "none" }}
-      className="bg-background text-card-foreground w-full md:w-64 h-full p-4"
-    >
-      <SidebarHeader>
-        <div className="items-center justify-start mt-20 ml-20">
-          {/* Animasi Mengetik untuk h1 */}
+    <div className="flex flex-col h-full w-full bg-background text-card-foreground p-4 md:p-6">
+      <div className="flex flex-col flex-grow">
+        <div className="items-center justify-start mt-4 md:mt-20">
           <motion.h1
-            className="text-5xl font-semibold text-card whitespace-nowrap"
+            className={cn("font-semibold text-card whitespace-nowrap", "text-3xl md:text-5xl")}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
           >
             {staticText}
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            >
+            <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
               {displayText}
             </motion.span>
           </motion.h1>
 
-          {/* Animasi Masuk untuk h2 */}
           <motion.h2
-            className="text-2xl text-gray-600 whitespace-nowrap mt-4 font-semibold"
+            className={cn("text-gray-600 whitespace-nowrap mt-2 md:mt-4 font-semibold", "text-xl md:text-2xl")}
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 1.5, duration: 0.8 }}
@@ -95,9 +82,8 @@ export function AppSidebar() {
             Front End Engineer
           </motion.h2>
 
-          {/* Animasi Masuk untuk h3 */}
           <motion.h3
-            className="text-lg text-gray-600 mt-4 font-semibold w-96"
+            className={cn("text-gray-600 mt-2 md:mt-4 font-semibold", "text-sm md:text-lg")}
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 2, duration: 0.8 }}
@@ -105,10 +91,12 @@ export function AppSidebar() {
             I design innovative and functional web for the digital future.
           </motion.h3>
         </div>
-      </SidebarHeader>
-      <SidebarContent className="w-full h-full flex flex-col items-center justify-center">
-        <InfiniteMovingCards items={items} direction="right" speed="normal" />
-      </SidebarContent>
-    </Sidebar>
+
+        {/* InfiniteMovingCards di bawah teks */}
+        <div className="flex-1 mt-6">
+          <InfiniteMovingCards items={items} />
+        </div>
+      </div>
+    </div>
   );
 }
